@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pricing Cards — Refactored</title>
+  <style>
+    :root {
+      --card-bg: #ffffff;
+      --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      --divider: #eeeeee;
+      --brand: #2563eb;
+      --brand-hover: #1e40af;
+      --price: #16a34a;
+      --text: #111827;
+      --muted: #6b7280;
+      --surface: #f6f7f9;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 24px 16px;
+    }
+
+    .heading {
+      margin: 0 0 12px;
+      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .subheading {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .pricing-card {
+      width: 100%;
+      max-width: 100%;
+      margin: 0 auto;
+      background-color: var(--card-bg);
+      box-shadow: var(--card-shadow); /* fixed box-shadow typo */
+      padding: 16px 20px;
+      text-align: left;
+      border-radius: 12px;
+    }
+
+    .title {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 0 0 8px;
+    }
+
+    .price {
+      font-size: 18px;
+      color: var(--price);
+      margin: 0 0 12px;
+    }
+
+    .features {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .features li {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--divider);
+    }
+
+    .features li:last-child {
+      border-bottom: none;
+    }
+
+    .btn {
+      background: var(--brand);
+      color: #ffffff;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 12px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .btn:hover { background: var(--brand-hover); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="heading">Pricing</h1>
+    <p class="subheading">Reusable card component demo with multiple plans.</p>
+    <div id="app" class="grid"></div>
+  </div>
+
+  <script>
+    function escapeHtml(text) {
+      const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+      return String(text).replace(/[&<>"']/g, (m) => map[m]);
+    }
+
+    function Card({ title, price, features, ctaText = 'Start Trial' }) {
+      const card = document.createElement('div');
+      card.className = 'pricing-card';
+
+      const safeTitle = escapeHtml(title);
+      const safePrice = escapeHtml(price);
+      const featuresMarkup = (Array.isArray(features) ? features : [])
+        .map((f) => `<li>${escapeHtml(f)}</li>`) 
+        .join('');
+
+      card.innerHTML = `
+        <h2 class="title">${safeTitle}</h2>
+        <p class="price">${safePrice}</p>
+        <ul class="features">${featuresMarkup}</ul>
+        <button class="btn" type="button">${escapeHtml(ctaText)}</button>
+      `; // fixed unclosed </h2> tag
+
+      return card;
+    }
+
+    const app = document.getElementById('app');
+
+    const demoData = [
+      {
+        title: 'Basic Plan',
+        price: '$9.99 / month',
+        features: ['1 GB Storage', 'Basic Support', 'All Core Features'],
+      },
+      {
+        title: 'Pro Plan',
+        price: '$19.99 / month',
+        features: ['10 GB Storage', 'Priority Support', 'Advanced Features'],
+        ctaText: 'Choose Pro',
+      },
+      {
+        title: 'Enterprise',
+        price: 'Contact us',
+        features: ['Unlimited Storage', 'Dedicated Support', 'Custom SLAs'],
+        ctaText: 'Talk to Sales',
+      },
+    ];
+
+    demoData.forEach((data) => app.appendChild(Card(data)));
+  </script>
+</body>
+</html>
