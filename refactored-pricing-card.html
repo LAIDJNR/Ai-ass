@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Card Component</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Reusable Card Component */
+        .card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            max-width: 350px;
+            width: 100%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card-price {
+            font-size: 32px;
+            font-weight: 800;
+            color: #2ecc71;
+            margin-bottom: 20px;
+        }
+
+        .card-price-period {
+            font-size: 16px;
+            font-weight: 400;
+            color: #666;
+        }
+
+        .card-features {
+            list-style: none;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .card-features li {
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            color: #555;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .card-features li:last-child {
+            border-bottom: none;
+        }
+
+        .card-features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        .card-button {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .card-button:hover {
+            background: linear-gradient(135deg, #2980b9, #1f618d);
+            transform: translateY(-2px);
+        }
+
+        .card-button:active {
+            transform: translateY(0);
+        }
+
+        /* Popular badge */
+        .card-popular {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 5px 15px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 0 12px 0 12px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .card {
+                max-width: 100%;
+                margin: 10px 0;
+            }
+        }
+
+        /* Demo container for multiple cards */
+        .demo-container {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: stretch;
+        }
+
+        @media (max-width: 768px) {
+            .demo-container {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <!-- Basic Plan Card -->
+        <div class="card">
+            <h2 class="card-title">Basic Plan</h2>
+            <div class="card-price">
+                $9.99<span class="card-price-period">/month</span>
+            </div>
+            <ul class="card-features">
+                <li>1 GB Storage</li>
+                <li>Basic Support</li>
+                <li>All Core Features</li>
+            </ul>
+            <button class="card-button">Start Trial</button>
+        </div>
+
+        <!-- Pro Plan Card -->
+        <div class="card">
+            <div class="card-popular">Most Popular</div>
+            <h2 class="card-title">Pro Plan</h2>
+            <div class="card-price">
+                $19.99<span class="card-price-period">/month</span>
+            </div>
+            <ul class="card-features">
+                <li>10 GB Storage</li>
+                <li>Priority Support</li>
+                <li>All Core Features</li>
+                <li>Advanced Analytics</li>
+                <li>API Access</li>
+            </ul>
+            <button class="card-button">Start Trial</button>
+        </div>
+
+        <!-- Enterprise Plan Card -->
+        <div class="card">
+            <h2 class="card-title">Enterprise Plan</h2>
+            <div class="card-price">
+                $49.99<span class="card-price-period">/month</span>
+            </div>
+            <ul class="card-features">
+                <li>Unlimited Storage</li>
+                <li>24/7 Premium Support</li>
+                <li>All Core Features</li>
+                <li>Advanced Analytics</li>
+                <li>API Access</li>
+                <li>Custom Integrations</li>
+                <li>Dedicated Account Manager</li>
+            </ul>
+            <button class="card-button">Contact Sales</button>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced functionality for the card component
+        class PricingCard {
+            constructor(element) {
+                this.element = element;
+                this.button = element.querySelector('.card-button');
+                this.init();
+            }
+
+            init() {
+                this.button.addEventListener('click', this.handleClick.bind(this));
+            }
+
+            handleClick(event) {
+                event.preventDefault();
+                const planName = this.element.querySelector('.card-title').textContent;
+                
+                // Add visual feedback
+                this.button.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.button.style.transform = '';
+                }, 150);
+
+                // Simulate action (in real app, this would make an API call)
+                console.log(`Selected plan: ${planName}`);
+                alert(`You selected the ${planName}! This would normally redirect to signup.`);
+            }
+        }
+
+        // Initialize all cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => new PricingCard(card));
+        });
+    </script>
+</body>
+</html>
